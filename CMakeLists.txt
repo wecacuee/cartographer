@@ -26,11 +26,14 @@ include("${PROJECT_SOURCE_DIR}/cmake/functions.cmake")
 google_initialize_cartographer_project()
 google_enable_testing()
 
-find_package(Boost REQUIRED COMPONENTS iostreams)
-find_package(Ceres REQUIRED COMPONENTS SparseLinearAlgebraLibrary)
+find_package(Boost 1.58 REQUIRED COMPONENTS iostreams)
+find_package(Ceres 1.9 REQUIRED COMPONENTS SparseLinearAlgebraLibrary)
 find_package(Eigen3 REQUIRED)
-find_package(LuaGoogle REQUIRED)
-find_package(Protobuf REQUIRED)
+find_package(LuaGoogle 5.2 REQUIRED)
+find_package(Protobuf 9.0 REQUIRED)
+LIST(APPEND CMAKE_MODULE_PATH ${CERES_CURRENT_CONFIG_DIR})
+find_package(Glog 0.3 REQUIRED)
+find_package(GFLAGS 2.2 REQUIRED)
 
 include(FindPkgConfig)
 PKG_SEARCH_MODULE(CAIRO REQUIRED cairo>=1.12.16)
@@ -125,8 +128,8 @@ target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
 target_link_libraries(${PROJECT_NAME} PUBLIC ${Boost_LIBRARIES})
 
 # We expect find_package(Ceres) to have located these for us.
-target_link_libraries(${PROJECT_NAME} PUBLIC glog)
-target_link_libraries(${PROJECT_NAME} PUBLIC gflags)
+target_link_libraries(${PROJECT_NAME} PUBLIC ${GLOG_LIBRARIES})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${GFLAG_LIBRARIES})
 
 target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
   "${CAIRO_INCLUDE_DIRS}")
